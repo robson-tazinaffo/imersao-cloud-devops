@@ -1,0 +1,28 @@
+# Query: 3307
+# ContextLines: 1
+
+5 results - 4 files
+
+COMANDOS.md:
+  83    # MySQL
+  84:   $ kubectl port-forward po/chatservice-mysql 3306:3306
+  85    
+
+chatservice/.env.example:
+  2  DB_HOST=mysql
+  3: DB_PORT=3306
+  4  DB_USER=root
+
+chatservice/entrypoint.sh:
+  1  #!/bin/bash
+  2: migrate -path=sql/ -database "mysql://$DB_USER:$DB_PASSWORD@tcp($DB_HOST:3306)/$DB_NAME" -verbose up
+  3  ./chatservice
+
+webapp/deployment-chatservice.yaml:
+  17            ports:
+  18:             - containerPort: 3306
+  19            env:
+
+  64              - name: DB_PORT
+  65:               value: "3306"
+  66              - name: DB_USER
